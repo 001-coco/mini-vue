@@ -10,7 +10,7 @@ echo.
 
 call npm run build
 if errorlevel 1 (
-  echo [错误] 构建失败，看上面的报错
+  echo [错误] 构建失败
   pause
   exit /b 1
 )

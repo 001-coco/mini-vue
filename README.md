@@ -9,7 +9,6 @@ npm install
 npm run dev
 ```
 
-打开控制台，点击按钮观察 `[render] 执行一次` 的打印次数，验证批量更新是否生效。
 
 ## 目录
 
@@ -28,27 +27,16 @@ src/
   demo/main.js              演示应用
 ```
 
-## 简历可写的版本（保守版：只写响应式核心）
+
 
 > 基于 Proxy 实现 `reactive` / `ref` 的依赖收集与派发更新，用 WeakMap→Map→Set 三级结构存储 target→key→effect 映射（WeakMap 弱引用避免内存泄漏）；用 effect 栈解决嵌套副作用的 `activeEffect` 覆盖问题，并在 effect 执行前清理旧依赖以处理分支切换；实现 `computed` 的脏标记 + 懒计算，依赖变化时只标记失效、下次读取才重算。
 >
 > 取舍：渲染器只做按下标对比的简化 diff，未实现 key 复用 —— 优先把响应式核心讲透。
-
-**刻意没写**：diff 的 key 复用、nextTick 调度器。除非你能回答「微任务为什么能批量更新」「双端 diff + 最长递增子序列具体怎么走」，否则别写。
-
-## 关键词自测表（每个问自己：能不看稿讲 2 分钟吗）
-
-| 关键词 | 2 分钟讲稿要覆盖 |
-|---|---|
 | Proxy vs defineProperty | 新增/删除属性、数组下标、懒代理三点 |
 | WeakMap→Map→Set | 为什么第一层必须是 WeakMap；Set 为什么能去重 |
 | effect 栈 | 没有栈会发生什么；组件嵌套渲染就是嵌套 effect |
 | cleanupEffect | 为什么要先清旧依赖；v-if 分支切换的具体场景 |
-| computed 脏标记 | 依赖变化时为什么不立即重算；懒计算收益在哪 |
-
-讲不了的直接删，不要留。
-
-## 面试常问点对照
+| computed 脏标记 | 依赖变化时为什么不立即重算；懒计算收益在哪 
 
 | 问题 | 对应代码 |
 |---|---|
@@ -60,8 +48,3 @@ src/
 | 为什么要 cleanupEffect | `effect.js` `run()` 开头，处理 v-if 分支切换 |
 | 数组 push 为什么会触发两次 | `trigger()` 中 ADD 额外触发 length，靠 scheduler 去重 |
 
-## 已做的简化（面试要主动说明）
-
-- diff 只按下标对比，未实现 `key` 级别复用与最长递增子序列
-- 未实现 `watch` / `watchEffect` / 组件 / 模板编译
-- 未处理 Fragment、Text、Comment 节点

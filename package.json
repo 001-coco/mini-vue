@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "从零实现 Vue3 响应式系统与渲染器（学习用）",
+  "description": "从零实现 Vue3 响应式系统与渲染器",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
